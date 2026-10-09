@@ -8,7 +8,7 @@ body:
     attributes:
       label: Zanim zgłosisz
       options:
-        - label: Przeczytałem/am sekcję [Problemy i rozwiązania](https://github.com/krystianr84/delegacji_zagranicznej_plus#problemy-i-rozwiązania) w README.
+        - label: Przeczytałem/am sekcję [Problemy i rozwiązania](https://github.com/krystianr84/delegacja_zagraniczna_plus#problemy-i-rozwiązania) w README.
           required: true
   - type: input
     id: wersja

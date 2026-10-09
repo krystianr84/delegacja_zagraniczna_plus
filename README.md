@@ -1,6 +1,6 @@
 # Kalkulator diety zagranicznej (Excel)
 
-[![Wersja](https://img.shields.io/github/v/release/krystianr84/delegacji_zagranicznej_plus?label=wersja)](https://github.com/krystianr84/delegacji_zagranicznej_plus/releases/latest)
+[![Wersja](https://img.shields.io/github/v/release/krystianr84/delegacja_zagraniczna_plus?label=wersja)](https://github.com/krystianr84/delegacja_zagraniczna_plus/releases/latest)
 [![Licencja: MIT](https://img.shields.io/badge/licencja-MIT-blue.svg)](LICENSE)
 
 Kalkulator diety z tytułu zagranicznej podróży służbowej. Działa w Excelu i automatycznie wypełnia druk delegacji („Polecenie wyjazdu służbowego” + „Rachunek kosztów podróży”). Powstał dla serwisantów wyjeżdżających za granicę.
@@ -15,10 +15,10 @@ Kalkulator diety z tytułu zagranicznej podróży służbowej. Działa w Excelu 
 
 | Plik | Dla kogo |
 |---|---|
-| **[Kalkulator z przykładem](https://github.com/krystianr84/delegacji_zagranicznej_plus/releases/latest/download/Kalkulator_delegacji_zagranicznej.xlsx)** | Na początek – fikcyjne dane („Jan Kowalski”, Niemcy + Austria) pokazują, jak działa kalkulator. Nadpisz je własnymi. Liczby z tego przykładu są rozpisane w sekcji [Przykład krok po kroku](#przykład-krok-po-kroku). |
-| **[Pusty szablon](https://github.com/krystianr84/delegacji_zagranicznej_plus/releases/latest/download/Kalkulator_delegacji_zagranicznej_pusty.xlsx)** | Do codziennej pracy – te same arkusze i formuły, bez przykładowych danych. |
+| **[Kalkulator z przykładem](https://github.com/krystianr84/delegacja_zagraniczna_plus/releases/latest/download/Kalkulator_delegacji_zagranicznej.xlsx)** | Na początek – fikcyjne dane („Jan Kowalski”, Niemcy + Austria) pokazują, jak działa kalkulator. Nadpisz je własnymi. Liczby z tego przykładu są rozpisane w sekcji [Przykład krok po kroku](#przykład-krok-po-kroku). |
+| **[Pusty szablon](https://github.com/krystianr84/delegacja_zagraniczna_plus/releases/latest/download/Kalkulator_delegacji_zagranicznej_pusty.xlsx)** | Do codziennej pracy – te same arkusze i formuły, bez przykładowych danych. |
 
-Najnowsza wersja, bez instalacji. Starsze wersje i opis zmian: [Wydania](https://github.com/krystianr84/delegacji_zagranicznej_plus/releases) i [historia zmian](CHANGELOG.md).
+Najnowsza wersja, bez instalacji. Starsze wersje i opis zmian: [Wydania](https://github.com/krystianr84/delegacja_zagraniczna_plus/releases) i [historia zmian](CHANGELOG.md).
 
 ## Zrzuty ekranu
 
@@ -83,7 +83,7 @@ Każdy kraj to osobny etap (wiersz w sekcji 2), wpisany w kolejności podróży.
 Liczbę śniadań, obiadów i kolacji **zapewnionych** w danym kraju (np. śniadania w cenie hotelu, obiady u klienta). Każdy posiłek pomniejsza dietę o 15% (śniadanie) albo 30% (obiad, kolacja) stawki dziennej.
 
 **Jak usunąć przykładowe dane?**
-Najprościej pobierz [pusty szablon](https://github.com/krystianr84/delegacji_zagranicznej_plus/releases/latest/download/Kalkulator_delegacji_zagranicznej_pusty.xlsx). W pliku z przykładem kliknij żółte pole i naciśnij `Delete` (kilka pól naraz zaznaczysz z `Ctrl`). Jeśli zaznaczenie obejmie też zablokowaną komórkę, Excel odmówi – wtedy zaznacz same żółte pola. Formuł nie skasujesz, bo są chronione.
+Najprościej pobierz [pusty szablon](https://github.com/krystianr84/delegacja_zagraniczna_plus/releases/latest/download/Kalkulator_delegacji_zagranicznej_pusty.xlsx). W pliku z przykładem kliknij żółte pole i naciśnij `Delete` (kilka pól naraz zaznaczysz z `Ctrl`). Jeśli zaznaczenie obejmie też zablokowaną komórkę, Excel odmówi – wtedy zaznacz same żółte pola. Formuł nie skasujesz, bo są chronione.
 
 **Kalkulator nie liczy diety krajowej, kilometrówki ani ryczałtów**
 Tak, to celowe. Liczona jest tylko dieta zagraniczna. Pozostałe koszty wpisuje się gotowymi kwotami w sekcji 5 – trafiają na druk delegacji i do kwoty ogółem.
@@ -124,7 +124,7 @@ Dieta razem: 215,53 EUR = **930,46 PLN**. Do tego noclegi 380 EUR × 4,3171 = 1 
 
 ## Zgłoś błąd albo pomysł
 
-Kalkulator liczy inaczej, niż powinien, plik nie działa albo masz pomysł na zmianę? [Załóż zgłoszenie](https://github.com/krystianr84/delegacji_zagranicznej_plus/issues/new/choose) – formularz podpowie, co podać. Nie wpisuj w nim imion, nazwisk ani numerów poleceń, wystarczą kraje, daty i kwoty.
+Kalkulator liczy inaczej, niż powinien, plik nie działa albo masz pomysł na zmianę? [Załóż zgłoszenie](https://github.com/krystianr84/delegacja_zagraniczna_plus/issues/new/choose) – formularz podpowie, co podać. Nie wpisuj w nim imion, nazwisk ani numerów poleceń, wystarczą kraje, daty i kwoty.
 
 ## Dla programistów
 

@@ -1,6 +1,6 @@
 # Historia zmian
 
-Numer wersji jest widoczny w nagłówku arkusza Kalkulator i w arkuszu Instrukcja. Pliki poszczególnych wersji są w [Wydaniach (Releases)](https://github.com/krystianr84/delegacji_zagranicznej_plus/releases).
+Numer wersji jest widoczny w nagłówku arkusza Kalkulator i w arkuszu Instrukcja. Pliki poszczególnych wersji są w [Wydaniach (Releases)](https://github.com/krystianr84/delegacja_zagraniczna_plus/releases).
 
 ## 2.4 (09.10.2026)
 
