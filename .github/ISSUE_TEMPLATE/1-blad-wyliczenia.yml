@@ -1,0 +1,60 @@
+name: Błąd w wyliczeniu
+description: Kalkulator liczy dietę, kurs albo kwotę inaczej, niż powinien.
+title: "[Wyliczenie] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Dziękuję za zgłoszenie! Opisz podróż tak, żeby dało się ją odtworzyć w pliku.
+        **Nie podawaj imion, nazwisk ani numerów poleceń** – wystarczą kraje, daty i kwoty.
+  - type: input
+    id: wersja
+    attributes:
+      label: Wersja kalkulatora
+      description: Widać ją w nagłówku arkusza Kalkulator, np. „ver. 2.4”.
+      placeholder: ver. 2.4
+    validations:
+      required: true
+  - type: textarea
+    id: podroz
+    attributes:
+      label: Kraje i daty
+      description: Każdy kraj z chwilą wjazdu oraz powrót przez granicę PL.
+      placeholder: |
+        Etap 1: Niemcy, wjazd 14.09.2026 10:30
+        Etap 2: Austria, wjazd 16.09.2026 14:00
+        Powrót: 18.09.2026 16:45
+    validations:
+      required: true
+  - type: input
+    id: posilki
+    attributes:
+      label: Zapewnione posiłki
+      placeholder: "Niemcy: 2 śniadania; Austria: 2 śniadania"
+  - type: input
+    id: kurs
+    attributes:
+      label: Data kursu i tryb
+      placeholder: 10.09.2026, dzień przed datą kursu
+    validations:
+      required: true
+  - type: input
+    id: wynik
+    attributes:
+      label: Wynik kalkulatora
+      description: Kwota i miejsce w pliku, np. „Dieta razem 930,46 PLN”.
+    validations:
+      required: true
+  - type: textarea
+    id: oczekiwane
+    attributes:
+      label: Oczekiwany wynik i skąd pochodzi
+      description: Np. wyliczenie ręczne, inny kalkulator, interpretacja przepisu (podaj paragraf rozporządzenia).
+    validations:
+      required: true
+  - type: textarea
+    id: zrzut
+    attributes:
+      label: Zrzut ekranu (opcjonalnie)
+      description: Możesz wkleić obrazek – zasłoń na nim dane osobowe.

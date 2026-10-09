@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Problemy i rozwiązania (FAQ)
+    url: https://github.com/krystianr84/delegacji_zagranicznej_plus#problemy-i-rozwiązania
+    about: Najczęstsze problemy – kursy NBP, #NAZWA?, Mac, chronione komórki, daty, posiłki.
+  - name: Pobierz najnowszą wersję
+    url: https://github.com/krystianr84/delegacji_zagranicznej_plus/releases/latest
+    about: Plik z przykładem i pusty szablon.

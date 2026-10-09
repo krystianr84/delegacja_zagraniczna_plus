@@ -1,0 +1,51 @@
+name: Plik nie działa
+description: Kursy się nie pobierają, widać błędy #..., nie da się czegoś wpisać albo wydrukować.
+title: "[Problem] "
+labels: ["question"]
+body:
+  - type: checkboxes
+    id: faq
+    attributes:
+      label: Zanim zgłosisz
+      options:
+        - label: Przeczytałem/am sekcję [Problemy i rozwiązania](https://github.com/krystianr84/delegacji_zagranicznej_plus#problemy-i-rozwiązania) w README.
+          required: true
+  - type: input
+    id: wersja
+    attributes:
+      label: Wersja kalkulatora
+      description: Widać ją w nagłówku arkusza Kalkulator, np. „ver. 2.4”.
+      placeholder: ver. 2.4
+    validations:
+      required: true
+  - type: dropdown
+    id: excel
+    attributes:
+      label: Program
+      options:
+        - Excel z Microsoft 365 (Windows)
+        - Excel 2024 (Windows)
+        - Excel 2021 lub starszy (Windows)
+        - Excel na Macu
+        - Excel w przeglądarce
+        - LibreOffice / Arkusze Google / inny
+    validations:
+      required: true
+  - type: input
+    id: kontrola
+    attributes:
+      label: Komunikat „Kontrola danych”
+      description: Tekst z góry arkusza Kalkulator.
+      placeholder: Brak kursu NBP – sprawdź datę kursu i internet albo wpisz kurs ręcznie (arkusz Kursy NBP)
+  - type: textarea
+    id: opis
+    attributes:
+      label: Co się dzieje?
+      description: Co zrobiłeś/aś, czego oczekiwałeś/aś i co się stało zamiast tego. Przy błędach #... podaj arkusz i komórkę.
+    validations:
+      required: true
+  - type: textarea
+    id: zrzut
+    attributes:
+      label: Zrzut ekranu (opcjonalnie)
+      description: Możesz wkleić obrazek – zasłoń na nim dane osobowe.

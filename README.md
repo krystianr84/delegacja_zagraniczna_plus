@@ -122,6 +122,10 @@ Dieta razem: 215,53 EUR = **930,46 PLN**. Do tego noclegi 380 EUR × 4,3171 = 1 
 
 **Aktualność stawek:** stawki diet są w arkuszu **Kraje**. Po zmianie przepisów można je tam poprawić (po wyłączeniu ochrony arkusza) albo pobrać nową wersję kalkulatora. W 2026 r. był projekt podwyżki stawek – sprawdź, czy weszła w życie.
 
+## Zgłoś błąd albo pomysł
+
+Kalkulator liczy inaczej, niż powinien, plik nie działa albo masz pomysł na zmianę? [Załóż zgłoszenie](https://github.com/krystianr84/delegacji_zagranicznej_plus/issues/new/choose) – formularz podpowie, co podać. Nie wpisuj w nim imion, nazwisk ani numerów poleceń, wystarczą kraje, daty i kwoty.
+
 ## Dla programistów
 
 Plik `.xlsx` jest generowany ze skryptów w `build/` (Python + Excel przez COM). Budowanie, testy, struktura repozytorium i wydawanie nowych wersji: [`docs/BUDOWANIE.md`](docs/BUDOWANIE.md).

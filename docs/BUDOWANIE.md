@@ -15,11 +15,13 @@ Plik `.xlsx` jest **generowany** – nie edytuj go ręcznie, zmieniaj `build/bui
 │   ├── test.ps1             testy regresji z oczekiwanymi kwotami (m.in. przypadek kontrolny)
 │   ├── export_raport.ps1    eksport wybranego arkusza do PDF (podgląd wydruku)
 │   ├── przenies_dane.ps1    przenosi wpisane dane ze starego pliku do świeżo zbudowanego
-│   ├── wydanie.ps1          buduje publiczny plik w wydanie/, uruchamia testy, czyści metadane
+│   ├── wydanie.ps1          buduje publiczne pliki w wydanie/, uruchamia testy, czyści metadane
+│   ├── social_preview.py    obrazek podglądu repo (docs/social-preview.png) ze zrzutów w docs/
 │   ├── kraje.json           120 państw: [nazwa, waluta, dieta, limit noclegu]
 │   ├── formulas.json        wygenerowane formuły (składnia angielska) – widać w nich zmiany logiki
 │   └── layout.json          wygenerowane adresy pól wejściowych
-├── docs/                    zrzuty ekranu i ten dokument
+├── docs/                    zrzuty ekranu, obrazek podglądu repo (social-preview.png) i ten dokument
+├── .github/ISSUE_TEMPLATE/  formularze zgłoszeń (błąd w wyliczeniu, plik nie działa, propozycja)
 ├── CHANGELOG.md             historia zmian
 ├── CLAUDE.md                notatki techniczne i pułapki (dla Claude Code)
 └── LICENSE                  licencja MIT
@@ -70,7 +72,7 @@ pwsh -NoProfile -File export_raport.ps1 -File "<.xlsx>" -Sheet Delegacja -Pdf "$
 ## Wydanie nowej wersji
 
 1. Zmień `WERSJA` / `WERSJA_DATA` w `build/build.py` i dopisz zmiany do [`CHANGELOG.md`](../CHANGELOG.md).
-2. Zbuduj publiczny plik: `pwsh -NoProfile -File build/wydanie.ps1`. Jeśli zmienił się wygląd, odśwież zrzuty w `docs/` (eksport arkuszy do PDF → PNG).
+2. Zbuduj publiczny plik: `pwsh -NoProfile -File build/wydanie.ps1`. Jeśli zmienił się wygląd albo numer wersji (widoczny w nagłówku), odśwież zrzuty w `docs/`: eksport arkuszy Kalkulator, Raport i Delegacja z `wydanie/` przez `export_raport.ps1 -Sheet …`, potem `pdftoppm -r 110 -png` i przycięcie białych marginesów (strona 1 Kalkulatora i Raportu, obie strony Delegacji). Na koniec `python build/social_preview.py` i wgranie `docs/social-preview.png` w **Settings → General → Social preview** (GitHub nie ma do tego API).
 3. Zatwierdź zmiany i wypchnij je na GitHub.
 4. Na GitHubie: **Releases → Draft a new release**, tag `vX.Y`, tytuł „Wersja X.Y”, w opisie zmiany z `CHANGELOG.md`. Dołącz oba pliki z `wydanie/` (`Kalkulator_delegacji_zagranicznej.xlsx` i `Kalkulator_delegacji_zagranicznej_pusty.xlsx`) **pod tymi samymi nazwami** – linki „Pobierz” w README prowadzą zawsze do plików o tych nazwach w najnowszym wydaniu. Jeśli zmienił się przykład w `build.py` albo stawki, popraw tabelę „Przykład krok po kroku” w README.
 
