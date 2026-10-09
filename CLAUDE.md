@@ -12,6 +12,7 @@ Produktem jest `Kalkulator_delegacji_zagranicznej.xlsx`. Plik jest bez makr, a w
 
 Numer wersji to stałe `WERSJA`/`WERSJA_DATA` w `build.py` (widoczne w nagłówku Kalkulatora i w Instrukcji). Wydanie wersji = zamrożona kopia `Kalkulator_delegacji_zagranicznej ver. X.Y.xlsx` w katalogu głównym (nie nadpisuj jej przy kolejnych zmianach).
 - **1.0** – kalkulator diety zagranicznej + Raport.
+- **2.5** (09.10.2026) – kwota słownie z odmianą złoty/złote/złotych (`slownie()` z krotką form w `jedn`), puste pole słownie przy ogółem = 0; testy słownie.
 - **2.4** (09.10.2026) – kurs ręczny awaryjny (Kursy NBP F:H, zastępuje kurs z WEBSERVICE; data i nr tabeli wymagane – kontrola E1), `-Set` z nazwą arkusza.
 - **2.3** (09.10.2026) – przykłady dat w komunikatach w formacie pól (`14.09.2026 10:30`).
 - **2.2** (09.10.2026) – kwota słownie w Delegacji (I61) ze słowami „złotych i” przed groszami (parametr `jedn` helpera `slownie()`).
@@ -68,6 +69,7 @@ Do skryptów `.ps1` używaj `pwsh` (PowerShell 7). Wymagany jest zainstalowany E
 
 - **Nie używaj `FILTERXML` do liczb z NBP.** W polskich ustawieniach regionalnych „4.3171” daje bzdurną liczbę. Parsuj tekstowo: `NUMBERVALUE(TEXTBEFORE(TEXTAFTER(xml,"<Mid>",-1),"</Mid>"),".")`.
 - **Nie używaj `TEXT(data,"yyyy-mm-dd")`.** Kody formatu zależą od ustawień regionalnych (w PL to `rrrr`). Daty do URL buduj z `YEAR`/`MONTH`/`DAY` (helper `ymd()` w `build.py`).
+- **NBP ogranicza liczbę zapytań**: po ~12 przeliczeniach pliku w kilka sekund (~240 zapytań `WEBSERVICE`) zwraca błędy przez krótki czas. `test.ps1` przy nieudanym pobraniu kursu z daty nie z przyszłości czeka i przelicza ponownie; w innych skryptach przy masowych przeliczeniach rób przerwy.
 - Kurs „z dnia X” = zapytanie o zakres X−14…X i wybór ostatniego notowania (weekendy i święta zwracają 404). Pojedyncze zapytanie API obejmuje maksymalnie 93 dni.
 - W skryptach `.ps1` nie używaj polskich cudzysłowów „ ” wewnątrz stringów w podwójnych cudzysłowach – PowerShell traktuje je jak zwykłe `"` i skrypt się nie parsuje.
 - Błędy formuł przez COM szukaj w `UsedRange.Value2` (błąd = `Int32`), nie przez `.Text` komórka po komórce – to drugie trwa minuty.

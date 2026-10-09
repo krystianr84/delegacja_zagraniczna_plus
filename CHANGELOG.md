@@ -2,6 +2,15 @@
 
 Numer wersji jest widoczny w nagłówku arkusza Kalkulator i w arkuszu Instrukcja. Pliki poszczególnych wersji są w [Wydaniach (Releases)](https://github.com/krystianr84/delegacja_zagraniczna_plus/releases).
 
+## 2.5 (09.10.2026)
+
+**Zmieniono**
+- Kwota słownie na druku Delegacji ma poprawną odmianę: „jeden złoty”, „dwa / trzy / cztery złote” (także 22, 103 itd.), „pięć / dwanaście / dwadzieścia jeden złotych”.
+- Przy kwocie ogółem równej zero (np. pusty szablon) pole „Słownie złotych” zostaje puste zamiast „zero złotych i 00/100”.
+
+**Dodano**
+- Sześć testów regresji kwoty słownie (złote, złotych, 12–14, 22, jeden złoty, puste pole). Testy ponawiają pobranie kursów, gdy NBP chwilowo odrzuca zapytania.
+
 ## 2.4 (09.10.2026)
 
 **Dodano**

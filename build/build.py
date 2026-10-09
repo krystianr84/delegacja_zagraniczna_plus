@@ -9,7 +9,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ARGS = [a for a in sys.argv[1:] if not a.startswith("--")]
 PUSTY = "--pusty" in sys.argv[1:]   # pusty szablon: bez przykładowych danych (zostają tylko wartości domyślne)
 OUT = ARGS[0] if ARGS else os.path.join(HERE, "..", "Kalkulator_delegacji_zagranicznej.xlsx")
-WERSJA, WERSJA_DATA = "2.4", "09.10.2026"
+WERSJA, WERSJA_DATA = "2.5", "09.10.2026"
 kraje = json.load(open(os.path.join(HERE, "kraje.json"), encoding="utf-8"))
 WALUTY = ["EUR", "USD", "AUD", "DKK", "JPY", "CAD", "NOK", "CHF", "SEK", "GBP"]
 F = {}  # formuły wpisywane później przez Excel (Formula2)
@@ -749,7 +749,9 @@ WYJAZ = (f'IF(Kalkulator!$J${E0}:$J${E1}="",IF(Kalkulator!$C${E0+1}:$C${RET}<>""
 
 
 def slownie(x, jedn=""):
-    """Kwota słownie po polsku, np. 930,46 → „dziewięćset trzydzieści 46/100”; jedn wstawiana przed groszami."""
+    """Kwota słownie po polsku, np. 930,46 → „dziewięćset trzydzieści 46/100”; jedn wstawiana przed groszami.
+    jedn jako krotka (1, 2–4, 5+) odmienia jednostkę jak tysiące: („złoty i”, „złote i”, „złotych i”) →
+    „jeden złoty i”, „dwa złote i”, „pięć / dwanaście / dwadzieścia jeden złotych i”."""
     J = '{"","jeden","dwa","trzy","cztery","pięć","sześć","siedem","osiem","dziewięć"}'
     N = ('{"dziesięć","jedenaście","dwanaście","trzynaście","czternaście","piętnaście","szesnaście",'
          '"siedemnaście","osiemnaście","dziewiętnaście"}')
@@ -763,7 +765,10 @@ def slownie(x, jedn=""):
             'IF(AND(MOD(v,10)>=2,MOD(v,10)<=4,OR(MOD(v,100)<10,MOD(v,100)>20)),dw,wl)))),'
             's,TRIM(grp(INT(z/10^6),"jeden milion","miliony","milionów")&" "&'
             'grp(INT(MOD(z,10^6)/1000),"jeden tysiąc","tysiące","tysięcy")&" "&tri(MOD(z,1000))),'
-            'IF(z=0,"zero",s)&" ' + (jedn + " " if jedn else "") + '"&RIGHT("0"&g,2)&"/100")')
+            'IF(z=0,"zero",s)&" ' + (jedn + " " if isinstance(jedn, str) and jedn else "") + '"&'
+            + ('IF(z=1,"' + jedn[0] + '",IF(AND(MOD(z,10)>=2,MOD(z,10)<=4,OR(MOD(z,100)<10,MOD(z,100)>20)),"'
+               + jedn[1] + '","' + jedn[2] + '"))&" "&' if isinstance(jedn, tuple) else "")
+            + 'RIGHT("0"&g,2)&"/100")')
 
 
 def dtxt(ref, text=None, font=f_d, h="left", v="center", wrap=False, merge=None, formula=None):
@@ -948,7 +953,7 @@ dtxt(f"F{OG+1}", "Słownie złotych:", f8, v="top", merge=f"F{OG+1}:H{OG+5}")
 dtxt(f"I{OG}", font=Font(name=FONT, size=10, bold=True), h="right", v="top",
      formula=f"=SUM(I{RAZ},I{DIET},I{DIET+1}:I{DIET+3})")
 dtxt(f"I{OG+1}", font=Font(name=FONT, size=10), h="center", v="top", wrap=True, merge=f"I{OG+1}:I{OG+5}",
-     formula=f"={slownie(f'I{OG}', 'złotych i')}")
+     formula=f'=IF(N(I{OG})=0,"",{slownie(f"I{OG}", ("złoty i", "złote i", "złotych i"))})')   # puste przy 0 (pusty druk)
 dele[f"I{OG}"].number_format = M2
 frame(f"F{OG}:H{OG+5}")
 frame(f"I{OG}:I{OG+5}")

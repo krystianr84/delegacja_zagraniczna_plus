@@ -51,7 +51,7 @@ Więcej wskazówek jest w arkuszu **Instrukcja** w pliku.
 
 **Kontrola pokazuje „Brak kursu NBP” albo kursy są puste**
 1. Sprawdź, czy kliknięto **Włącz edytowanie** (żółty pasek Widoku chronionego) i **Włącz zawartość**, jeśli Excel o to pytał.
-2. Naciśnij `Ctrl+Alt+F9` – wymusza ponowne przeliczenie i pobranie kursów.
+2. Naciśnij `Ctrl+Alt+F9` – wymusza ponowne przeliczenie i pobranie kursów. Jeśli przeliczałeś/aś plik wiele razy pod rząd, NBP mógł na chwilę zablokować zapytania – odczekaj minutę i spróbuj ponownie.
 3. Sprawdź **datę kursu**. Kurs z przyszłej daty jeszcze nie istnieje – NBP publikuje kursy w dni robocze, około południa.
 4. Otwórz w przeglądarce <https://api.nbp.pl/api/exchangerates/tables/a/>. Jeśli strona się nie otwiera, a internet działa, sieć firmowa (proxy, zapora) blokuje NBP. Poproś dział IT o dostęp do `api.nbp.pl` albo **wpisz kurs ręcznie** (niżej).
 

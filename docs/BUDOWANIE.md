@@ -54,7 +54,7 @@ Bez argumentu `build.py` i skrypty działają na roboczym pliku `Kalkulator_dele
 
 ## Testy
 
-`build/test.ps1` otwiera plik w Excelu (bez zapisywania) i sprawdza 10 przypadków: przykład z `build.py`, przypadek kontrolny (Węgry), krótki wyjazd (1/3 diety), pusty etap między krajami, tekst zamiast daty, nadmiar posiłków, powrót przed wjazdem, brak kursu oraz kurs ręczny (poprawny i bez nr tabeli). Dla poprawnych danych porównuje kwoty diety i ogółem (także na druku Delegacji) i szuka błędów `#...` we wszystkich arkuszach. Kod wyjścia 1 oznacza, że któryś test nie przeszedł.
+`build/test.ps1` otwiera plik w Excelu (bez zapisywania) i sprawdza 16 przypadków: przykład z `build.py`, przypadek kontrolny (Węgry), krótki wyjazd (1/3 diety), pusty etap między krajami, tekst zamiast daty, nadmiar posiłków, powrót przed wjazdem, brak kursu, kurs ręczny (poprawny i bez nr tabeli) oraz kwotę słownie na druku Delegacji (odmiana złoty/złote/złotych, puste pole przy zerze). Dla poprawnych danych porównuje kwoty diety i ogółem (także na druku Delegacji) i szuka błędów `#...` we wszystkich arkuszach. NBP chwilowo odrzuca zapytania po kilkuset w krótkim czasie – test wtedy czeka i przelicza ponownie, więc całość może potrwać kilka minut. Kod wyjścia 1 oznacza, że któryś test nie przeszedł.
 
 ```bash
 pwsh -NoProfile -File build/test.ps1                      # domyślnie wydanie/Kalkulator_delegacji_zagranicznej.xlsx
