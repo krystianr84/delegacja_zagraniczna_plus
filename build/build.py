@@ -6,7 +6,9 @@ from openpyxl.formatting.rule import FormulaRule
 from openpyxl.comments import Comment
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-OUT = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, "..", "Kalkulator_delegacji_zagranicznej.xlsx")
+ARGS = [a for a in sys.argv[1:] if not a.startswith("--")]
+PUSTY = "--pusty" in sys.argv[1:]   # pusty szablon: bez przykładowych danych (zostają tylko wartości domyślne)
+OUT = ARGS[0] if ARGS else os.path.join(HERE, "..", "Kalkulator_delegacji_zagranicznej.xlsx")
 WERSJA, WERSJA_DATA = "2.4", "09.10.2026"
 kraje = json.load(open(os.path.join(HERE, "kraje.json"), encoding="utf-8"))
 WALUTY = ["EUR", "USD", "AUD", "DKK", "JPY", "CAD", "NOK", "CHF", "SEK", "GBP"]
@@ -279,6 +281,8 @@ dane = [  # (adres, etykieta, przykład, format, podpowiedź)
     (TERM, "Termin rozliczenia zaliczki (dni)", None, "0", None),
     (DOW, "Liczba załączonych dowodów", None, "0", "Rachunki, bilety itp. – do pola „Załączam … dowodów”."),
 ]
+if PUSTY:
+    dane = [(a, l, v if a == TRYB else None, fm_, n) for a, l, v, fm_, n in dane]
 for a, l, v, fm_, n in dane:
     col, r = a[0], int(a[1:])
     lab = "B" if col == "C" else "I"
@@ -318,6 +322,8 @@ przyklad = {
     E0 + 1: ["Austria", dt.datetime(2026, 9, 16, 14, 0), 2, 0, 0, "Linz",
              dt.datetime(2026, 9, 16, 15, 30), dt.datetime(2026, 9, 18, 14, 0)],
 }
+if PUSTY:
+    przyklad = {}
 for i in range(ETAPY):
     r = E0 + i
     kal[f"B{r}"] = f"Etap {i+1}"
@@ -335,7 +341,7 @@ for c in "BCEFGHIJ":
     kal[f"{c}{RET}"].fill = fill_off
     kal[f"{c}{RET}"].alignment = Alignment(horizontal="center")
 kal[f"B{RET}"].font = f_bold
-inp(kal[f"D{RET}"], dt.datetime(2026, 9, 18, 16, 45), DT)
+inp(kal[f"D{RET}"], None if PUSTY else dt.datetime(2026, 9, 18, 16, 45), DT)
 kal[f"D{RET}"].alignment = Alignment(horizontal="center")
 kal.merge_cells(f"E{RET}:G{RET}")
 kal[f"E{RET}"] = "koniec pobytu za granicą (§12)"
@@ -415,7 +421,7 @@ KOSZTY = ["Ryczałty za dojazdy", "Dojazdy udokumentowane", "Noclegi wg rachunk�
           "Inne wydatki wg załączników"]
 KO0 = S6 + 2
 KO = {}
-przyklad6 = {"Noclegi wg rachunków": (380, "EUR")}
+przyklad6 = {} if PUSTY else {"Noclegi wg rachunków": (380, "EUR")}
 for i, l in enumerate(KOSZTY):
     r = KO0 + i
     KO[l] = r

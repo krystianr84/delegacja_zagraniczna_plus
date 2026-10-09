@@ -13,9 +13,12 @@ Kalkulator diety z tytułu zagranicznej podróży służbowej. Działa w Excelu 
 
 ## ⬇️ Pobierz
 
-**[Pobierz Kalkulator_delegacji_zagranicznej.xlsx](https://github.com/krystianr84/delegacji_zagranicznej_plus/releases/latest/download/Kalkulator_delegacji_zagranicznej.xlsx)** – najnowsza wersja, jeden plik, bez instalacji.
+| Plik | Dla kogo |
+|---|---|
+| **[Kalkulator z przykładem](https://github.com/krystianr84/delegacji_zagranicznej_plus/releases/latest/download/Kalkulator_delegacji_zagranicznej.xlsx)** | Na początek – fikcyjne dane („Jan Kowalski”, Niemcy + Austria) pokazują, jak działa kalkulator. Nadpisz je własnymi. Liczby z tego przykładu są rozpisane w sekcji [Przykład krok po kroku](#przykład-krok-po-kroku). |
+| **[Pusty szablon](https://github.com/krystianr84/delegacji_zagranicznej_plus/releases/latest/download/Kalkulator_delegacji_zagranicznej_pusty.xlsx)** | Do codziennej pracy – te same arkusze i formuły, bez przykładowych danych. |
 
-Plik zawiera przykładowe, fikcyjne dane („Jan Kowalski”, Niemcy + Austria), żeby od razu było widać, jak działa. Nadpisz je własnymi. Starsze wersje i opis zmian: [Wydania](https://github.com/krystianr84/delegacji_zagranicznej_plus/releases) i [historia zmian](CHANGELOG.md).
+Najnowsza wersja, bez instalacji. Starsze wersje i opis zmian: [Wydania](https://github.com/krystianr84/delegacji_zagranicznej_plus/releases) i [historia zmian](CHANGELOG.md).
 
 ## Zrzuty ekranu
 
@@ -80,7 +83,7 @@ Każdy kraj to osobny etap (wiersz w sekcji 2), wpisany w kolejności podróży.
 Liczbę śniadań, obiadów i kolacji **zapewnionych** w danym kraju (np. śniadania w cenie hotelu, obiady u klienta). Każdy posiłek pomniejsza dietę o 15% (śniadanie) albo 30% (obiad, kolacja) stawki dziennej.
 
 **Jak usunąć przykładowe dane?**
-Kliknij żółte pole i naciśnij `Delete` (kilka pól naraz zaznaczysz z `Ctrl`). Jeśli zaznaczenie obejmie też zablokowaną komórkę, Excel odmówi – wtedy zaznacz same żółte pola. Formuł nie skasujesz, bo są chronione.
+Najprościej pobierz [pusty szablon](https://github.com/krystianr84/delegacji_zagranicznej_plus/releases/latest/download/Kalkulator_delegacji_zagranicznej_pusty.xlsx). W pliku z przykładem kliknij żółte pole i naciśnij `Delete` (kilka pól naraz zaznaczysz z `Ctrl`). Jeśli zaznaczenie obejmie też zablokowaną komórkę, Excel odmówi – wtedy zaznacz same żółte pola. Formuł nie skasujesz, bo są chronione.
 
 **Kalkulator nie liczy diety krajowej, kilometrówki ani ryczałtów**
 Tak, to celowe. Liczona jest tylko dieta zagraniczna. Pozostałe koszty wpisuje się gotowymi kwotami w sekcji 5 – trafiają na druk delegacji i do kwoty ogółem.
@@ -95,6 +98,25 @@ Rozporządzenie MPiPS z 29.01.2013 w sprawie należności przysługujących prac
 | §13 – dieta | Za każdą pełną dobę 100%; niepełna doba: do 8 h – 1/3, ponad 8 do 12 h – 1/2, ponad 12 h – 100%. Liczona osobno dla każdego kraju. |
 | §14 – posiłki | Śniadanie −15%, obiad −30%, kolacja −30% diety dziennej. Dieta nie spada poniżej zera. |
 | §20 – kurs | Średni kurs NBP (tabela A) z dnia poprzedzającego datę kursu albo z dnia daty kursu (do wyboru). Przy dniu wolnym – ostatni wcześniejszy kurs. |
+
+### Przykład krok po kroku
+
+Dane z pliku z przykładem: wyjazd samochodem do Monachium i Linzu, 2 śniadania w hotelu w każdym kraju, data kursu 10.09.2026, kurs z dnia poprzedniego.
+
+| | Niemcy | Austria |
+|---|---|---|
+| Wjazd do kraju | 14.09.2026 10:30 | 16.09.2026 14:00 |
+| Koniec etapu | 16.09.2026 14:00 (wjazd do Austrii) | 18.09.2026 16:45 (powrót przez granicę PL) |
+| Czas pobytu | 51 h 30 min = 2 doby + 3 h 30 min | 50 h 45 min = 2 doby + 2 h 45 min |
+| Liczba diet (§13) | 2 + ⅓ (reszta do 8 h) | 2 + ⅓ (reszta do 8 h) |
+| Dieta za dobę | 49 EUR | 57 EUR |
+| Wysokość diet | 49 × 2⅓ = 114,33 EUR | 57 × 2⅓ = 133,00 EUR |
+| Potrącenie za posiłki (§14) | 2 śniadania × 15% × 49 = 14,70 EUR | 2 śniadania × 15% × 57 = 17,10 EUR |
+| **Należna dieta** | **99,63 EUR** | **115,90 EUR** |
+| Kurs NBP | 4,3171 (tab. 175/A/NBP/2026 z 09.09.2026) | 4,3171 |
+| **Dieta w PLN** | 99,63 × 4,3171 = **430,11 PLN** | 115,90 × 4,3171 = **500,35 PLN** |
+
+Dieta razem: 215,53 EUR = **930,46 PLN**. Do tego noclegi 380 EUR × 4,3171 = 1 640,50 PLN, więc ogółem do rozliczenia **2 570,96 PLN**. Kwoty w PLN są liczone i zaokrąglane osobno dla każdego kraju.
 
 **Przypadek kontrolny**: Węgry, 28.09.2026 12:00 → 02.10.2026 16:00, bez posiłków, kurs z 08.10.2026 → **4 dni 4 godz. 0 min, 190,67 EUR, 834,92 PLN** (kurs 4,3789, tabela 196/A/NBP/2026).
 

@@ -7,7 +7,7 @@ Plik `.xlsx` jest **generowany** – nie edytuj go ręcznie, zmieniaj `build/bui
 ## Struktura repozytorium
 
 ```
-├── wydanie/                 plik publikowany w Wydaniach (czysty, z przykładowymi danymi)
+├── wydanie/                 pliki publikowane w Wydaniach: z przykładowymi danymi i pusty szablon (_pusty)
 ├── build/
 │   ├── build.py             układ, formaty, dane statyczne, walidacje → .xlsx + formulas.json + layout.json
 │   ├── apply.ps1            Excel przez COM: wpisuje formuły, przelicza, chroni arkusze, zapisuje
@@ -33,7 +33,7 @@ Potrzebne: Windows z Excelem, Python 3 z `openpyxl` (`pip install -r requirement
 
 Budowa ma dwa etapy i **zawsze trzeba uruchomić oba**. Formuły są wpisywane przez Excel, bo openpyxl źle zapisuje funkcje tablic dynamicznych (prefiksy `_xlfn.`, niejawne przecięcie `@`).
 
-Publiczny plik w `wydanie/` buduje jeden skrypt. Uruchamia oba etapy i testy, a na koniec usuwa z metadanych nazwę użytkownika, którą Excel dopisuje przy zapisie. Przy błędzie formuł albo nieudanym teście skrypt przerywa pracę:
+Publiczne pliki w `wydanie/` buduje jeden skrypt: plik z przykładowymi danymi (sprawdzany testami) i pusty szablon `_pusty.xlsx` (`build.py --pusty`, sprawdzany pod kątem błędów `#...`). Na koniec usuwa z metadanych obu plików nazwę użytkownika, którą Excel dopisuje przy zapisie. Przy błędzie formuł albo nieudanym teście skrypt przerywa pracę:
 
 ```bash
 pwsh -NoProfile -File build/wydanie.ps1
@@ -72,7 +72,7 @@ pwsh -NoProfile -File export_raport.ps1 -File "<.xlsx>" -Sheet Delegacja -Pdf "$
 1. Zmień `WERSJA` / `WERSJA_DATA` w `build/build.py` i dopisz zmiany do [`CHANGELOG.md`](../CHANGELOG.md).
 2. Zbuduj publiczny plik: `pwsh -NoProfile -File build/wydanie.ps1`. Jeśli zmienił się wygląd, odśwież zrzuty w `docs/` (eksport arkuszy do PDF → PNG).
 3. Zatwierdź zmiany i wypchnij je na GitHub.
-4. Na GitHubie: **Releases → Draft a new release**, tag `vX.Y`, tytuł „Wersja X.Y”, w opisie zmiany z `CHANGELOG.md`. Dołącz plik `wydanie/Kalkulator_delegacji_zagranicznej.xlsx` **pod tą samą nazwą** – link „Pobierz” w README prowadzi zawsze do pliku o tej nazwie w najnowszym wydaniu.
+4. Na GitHubie: **Releases → Draft a new release**, tag `vX.Y`, tytuł „Wersja X.Y”, w opisie zmiany z `CHANGELOG.md`. Dołącz oba pliki z `wydanie/` (`Kalkulator_delegacji_zagranicznej.xlsx` i `Kalkulator_delegacji_zagranicznej_pusty.xlsx`) **pod tymi samymi nazwami** – linki „Pobierz” w README prowadzą zawsze do plików o tych nazwach w najnowszym wydaniu. Jeśli zmienił się przykład w `build.py` albo stawki, popraw tabelę „Przykład krok po kroku” w README.
 
 ## Aktualizacja stawek
 

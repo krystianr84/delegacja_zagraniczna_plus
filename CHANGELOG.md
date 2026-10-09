@@ -7,6 +7,7 @@ Numer wersji jest widoczny w nagłówku arkusza Kalkulator i w arkuszu Instrukcj
 **Dodano**
 - **Kurs ręczny** w arkuszu Kursy NBP (kolumny F–H: kurs, data notowania, nr tabeli) – na wypadek, gdy kursy nie pobierają się automatycznie (np. sieć firmowa blokuje api.nbp.pl). Wpisany kurs zastępuje kurs z NBP w diecie, kosztach, Raporcie i Delegacji; kolumna „Źródło kursu” pokazuje, skąd jest kurs.
 - Kontrolę „Kurs ręczny: uzupełnij datę notowania i nr tabeli” (czerwone podświetlenie brakującego pola). Komunikat „Brak kursu NBP” podpowiada kurs ręczny.
+- **Pusty szablon** `Kalkulator_delegacji_zagranicznej_pusty.xlsx` w wydaniu – te same arkusze bez przykładowych danych (`build.py --pusty`; `wydanie.ps1` buduje oba pliki).
 - Dwa testy regresji (kurs ręczny zamiast NBP, kurs ręczny bez nr tabeli); `-Set` w skryptach przyjmuje adresy z nazwą arkusza (`Kursy NBP!F8=4.4`). `przenies_dane.ps1` przenosi też kurs ręczny.
 
 **Zmieniono**
