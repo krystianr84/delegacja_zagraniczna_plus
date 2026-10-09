@@ -1,0 +1,23 @@
+# Robocze pliki Excela w katalogu głównym zawierają prawdziwe dane (nazwiska, numery poleceń, kwoty)
+# – łącznie z zamrożonymi kopiami „ver. X.Y”. Publiczna wersja do pobrania jest w wydanie/.
+/*.xlsx
+
+# pliki blokady Excela
+~$*
+
+# podglądy wydruku generowane przez skrypty
+build/*.pdf
+
+# Python
+__pycache__/
+*.pyc
+
+# system / edytory
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+
+# materiały źródłowe (przypadek kontrolny, wzór druku delegacji) – tylko lokalnie
+Kalkulatory.pdf
+DELEGACJA.pdf
