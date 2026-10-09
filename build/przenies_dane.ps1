@@ -1,6 +1,6 @@
 ﻿param([Parameter(Mandatory)][string]$Z,
       [string]$File = (Join-Path $PSScriptRoot "..\Kalkulator_delegacji_zagranicznej.xlsx"))
-# Kopiuje dane wpisane przez użytkownika (pola wejściowe Kalkulatora) z pliku -Z do świeżo zbudowanego pliku.
+# Kopiuje dane wpisane przez użytkownika (pola wejściowe Kalkulatora i kurs ręczny z Kursów NBP) z pliku -Z do świeżo zbudowanego pliku.
 # Oba pliki muszą mieć ten sam układ (layout.json z ostatniego build.py). Uruchamiaj po build.py + apply.ps1.
 $OutputEncoding = [Console]::OutputEncoding = [Text.Encoding]::UTF8
 $L = Get-Content (Join-Path $PSScriptRoot "layout.json") -Raw -Encoding utf8 | ConvertFrom-Json
@@ -16,6 +16,11 @@ try {
     foreach ($a in $pola) {
         # przez Formula (tekst), bo przypisanie Value2 z innego skoroszytu potrafi rzucić błąd rzutowania
         foreach ($c in $s.Range($a).Cells) { if (-not $c.HasFormula) { $d.Range($c.Address()).Formula = [string]$c.Formula } }
+    }
+    # kurs ręczny (arkusz Kursy NBP, kolumny F:H) – tylko wiersze z wpisanym kursem
+    $ks = $src.Worksheets.Item("Kursy NBP"); $kd = $dst.Worksheets.Item("Kursy NBP")
+    foreach ($r in $L.KRS0..$L.KRS1) {
+        if ($ks.Range("F$r").Value2 -is [double]) { foreach ($c in "F", "G", "H") { $kd.Range("$c$r").Formula = [string]$ks.Range("$c$r").Formula } }
     }
     $x.CalculateFull()
     $dst.Save()

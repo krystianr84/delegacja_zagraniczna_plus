@@ -7,7 +7,7 @@ from openpyxl.comments import Comment
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = sys.argv[1] if len(sys.argv) > 1 else os.path.join(HERE, "..", "Kalkulator_delegacji_zagranicznej.xlsx")
-WERSJA, WERSJA_DATA = "2.3", "09.10.2026"
+WERSJA, WERSJA_DATA = "2.4", "09.10.2026"
 kraje = json.load(open(os.path.join(HERE, "kraje.json"), encoding="utf-8"))
 WALUTY = ["EUR", "USD", "AUD", "DKK", "JPY", "CAD", "NOK", "CHF", "SEK", "GBP"]
 F = {}  # formuły wpisywane później przez Excel (Formula2)
@@ -159,32 +159,62 @@ F["'Kursy NBP'!C4"] = f'=IF(Kalkulator!{DKURS}="","",Kalkulator!{DKURS})'
 kur["B5"] = "Szukany kurs: ostatni opublikowany do dnia"
 out(kur["C5"], D)
 F["'Kursy NBP'!C5"] = f'=IF(C4="","",C4-IF(Kalkulator!{TRYB}="w dniu daty kursu",0,1))'
-hdr(kur, 7, "BCDE", ["Waluta", "Kurs średni (PLN za 1 jedn.)", "Data notowania", "Nr tabeli NBP"], 30)
+# C:E – kurs użyty w wyliczeniach (z NBP albo z kursu ręcznego); F:H – kurs ręczny (awaryjnie, gdy WEBSERVICE nie działa)
+hdr(kur, 7, "BCDEFGHI", ["Waluta", "Kurs średni (PLN za 1 jedn.)", "Data notowania", "Nr tabeli NBP",
+                         "Kurs ręczny (opcjonalnie)", "Data notowania (ręcznie)", "Nr tabeli (ręcznie)", "Źródło kursu"], 42)
 KRS0, KRS1 = 8, 7 + len(WALUTY)
 ymd = lambda d: f'YEAR({d})&"-"&RIGHT("0"&MONTH({d}),2)&"-"&RIGHT("0"&DAY({d}),2)'
 for i, w in enumerate(WALUTY):
     r = KRS0 + i
     kur[f"B{r}"] = w
-    for c in "BCDE":
+    for c in "BCDEI":
         out(kur[f"{c}{r}"])
     kur[f"C{r}"].number_format = M4
     kur[f"D{r}"].number_format = D
+    inp(kur[f"F{r}"], fmt=M4)
+    inp(kur[f"G{r}"], fmt=D)
+    inp(kur[f"H{r}"], fmt="@")
     # surowa odpowiedź API (ukryta kolumna N) – jedno zapytanie na walutę
     F[f"'Kursy NBP'!N{r}"] = (
         f'=IF($C$5="","",IFERROR(WEBSERVICE("https://api.nbp.pl/api/exchangerates/rates/A/"&B{r}&"/"&'
         f'{ymd("($C$5-14)")}&"/"&{ymd("$C$5")}&"/?format=xml"),"BLAD"))')
     F[f"'Kursy NBP'!C{r}"] = (
-        f'=IF(N{r}="","",IFERROR(NUMBERVALUE(TEXTBEFORE(TEXTAFTER(N{r},"<Mid>",-1),"</Mid>"),"."),"brak kursu"))')
+        f'=IF(F{r}<>"",F{r},IF(N{r}="","",IFERROR(NUMBERVALUE(TEXTBEFORE(TEXTAFTER(N{r},"<Mid>",-1),"</Mid>"),"."),"brak kursu")))')
     F[f"'Kursy NBP'!D{r}"] = (
-        f'=IF(N{r}="","",IFERROR(LET(s,TEXTBEFORE(TEXTAFTER(N{r},"<EffectiveDate>",-1),"</EffectiveDate>"),'
-        f'DATE(LEFT(s,4),MID(s,6,2),RIGHT(s,2))),"-"))')
+        f'=IF(F{r}<>"",IF(G{r}="","",G{r}),IF(N{r}="","",IFERROR(LET(s,TEXTBEFORE(TEXTAFTER(N{r},"<EffectiveDate>",-1),"</EffectiveDate>"),'
+        f'DATE(LEFT(s,4),MID(s,6,2),RIGHT(s,2))),"-")))')
     F[f"'Kursy NBP'!E{r}"] = (
-        f'=IF(N{r}="","",IFERROR(TEXTBEFORE(TEXTAFTER(N{r},"<No>",-1),"</No>"),"-"))')
+        f'=IF(F{r}<>"",H{r},IF(N{r}="","",IFERROR(TEXTBEFORE(TEXTAFTER(N{r},"<No>",-1),"</No>"),"-")))')
+    F[f"'Kursy NBP'!I{r}"] = f'=IF(F{r}<>"","wpisany ręcznie",IF(ISNUMBER(C{r}),"NBP",""))'
 KURS_W = f"'Kursy NBP'!$B${KRS0}:$B${KRS1}"
 KURS_K = f"'Kursy NBP'!$C${KRS0}:$C${KRS1}"
+KRF = f"'Kursy NBP'!$F${KRS0}:$F${KRS1}"
+KRG = f"'Kursy NBP'!$G${KRS0}:$G${KRS1}"
+KRH = f"'Kursy NBP'!$H${KRS0}:$H${KRS1}"
 kur.column_dimensions["N"].hidden = True
-note(kur, "G8", "Kurs z ostatniego dnia roboczego – zapytanie obejmuje 14 dni wstecz, więc weekendy i święta nie powodują błędu.")
-note(kur, "G9", "Kursy pobierają się same po zmianie daty. Ręczne odświeżenie: Ctrl+Alt+F9.")
+for c in "FG":
+    kur.column_dimensions[c].width = 14
+kur.column_dimensions["I"].width = 15
+for c in "EH":   # nr tabeli, np. 196/A/NBP/2026
+    kur.column_dimensions[c].width = 15.5
+note(kur, "K8", "Kurs z ostatniego dnia roboczego – zapytanie obejmuje 14 dni wstecz, więc weekendy i święta nie powodują błędu.")
+note(kur, "K9", "Kursy pobierają się same po zmianie daty. Ręczne odświeżenie: Ctrl+Alt+F9.")
+note(kur, "K11", "Kurs ręczny (F–H) wpisz tylko wtedy, gdy kurs nie pobiera się automatycznie (np. sieć firmowa blokuje api.nbp.pl).")
+note(kur, "K12", "Kurs średni, datę i nr tabeli A znajdziesz na nbp.pl/statystyka-i-sprawozdawczosc/kursy/tabela-a. Wpisany kurs zastępuje kurs z NBP.")
+note(kur, "K13", "Żeby wrócić do kursu pobieranego automatycznie, usuń kurs ręczny (kolumny F–H).")
+vkr = DataValidation(type="decimal", operator="greaterThan", formula1="0", allow_blank=True,
+                     showErrorMessage=True, errorTitle="Niepoprawny kurs", error="Wpisz kurs większy od zera, np. 4,2563.")
+vkd = DataValidation(type="decimal", operator="between", formula1="36526", formula2="73051", allow_blank=True,
+                     showErrorMessage=True, errorTitle="Niepoprawna data", error="Wpisz datę notowania, np. 14.09.2026.")
+for v_, ref_ in ((vkr, f"F{KRS0}:F{KRS1}"), (vkd, f"G{KRS0}:G{KRS1}")):
+    kur.add_data_validation(v_)
+    v_.add(ref_)
+# brakująca data / nr tabeli przy wpisanym kursie ręcznym – czerwone pole (Raport drukuje datę i nr tabeli)
+for c in "GH":
+    kur.conditional_formatting.add(f"{c}{KRS0}:{c}{KRS1}", FormulaRule(
+        formula=[f'AND($F{KRS0}<>"",{c}{KRS0}="")'], fill=PatternFill("solid", start_color="FFC7CE", end_color="FFC7CE")))
+kur.conditional_formatting.add(f"I{KRS0}:I{KRS1}", FormulaRule(
+    formula=[f'$F{KRS0}<>""'], font=Font(name=FONT, bold=True, color="C65911")))
 
 sec(kur, 20, "B. Kursy NBP z podanego okresu (domyślnie pobyt za granicą – daty można nadpisać)", "L")
 kur["B21"] = "Od dnia"
@@ -427,7 +457,9 @@ F["Kalkulator!E1"] = (
     # posiłków jednego rodzaju nie może być więcej niż rozpoczętych dób pobytu w danym kraju
     f'IF(SUM((E{E0}:G{E1}>IFERROR(ROUNDUP(I{R0}:I{R1},0),1E9))*1)>0,"Więcej posiłków niż dni pobytu w kraju – sprawdź śniadania, obiady i kolacje",'
     f'IF({DKURS}="","Uzupełnij datę kursu",'
-    f'IF(COUNTIF(M{R0}:M{R1},"brak kursu")>0,"Brak kursu NBP – sprawdź datę kursu i połączenie z internetem","OK"))))))))))')
+    # kurs ręczny bez daty notowania lub nr tabeli (Raport drukuje oba)
+    f'IF(SUMPRODUCT(({KRF}<>"")*((({KRG}="")+({KRH}=""))>0))>0,"Kurs ręczny: uzupełnij datę notowania i nr tabeli (arkusz Kursy NBP)",'
+    f'IF(COUNTIF(M{R0}:M{R1},"brak kursu")>0,"Brak kursu NBP – sprawdź datę kursu i internet albo wpisz kurs ręcznie (arkusz Kursy NBP)","OK")))))))))))')
 kal.conditional_formatting.add("E1:H1", FormulaRule(formula=['$E$1="OK"'], fill=PatternFill("solid", start_color="C6EFCE"), font=Font(name=FONT, bold=True, color="006100")))
 kal.conditional_formatting.add("E1:H1", FormulaRule(formula=['$E$1<>"OK"'], fill=PatternFill("solid", start_color="FFC7CE"), font=Font(name=FONT, bold=True, color="9C0006")))
 
@@ -982,7 +1014,7 @@ ins.column_dimensions["A"].width = 2
 ins.column_dimensions["B"].width = 120
 txt = [
     ("Jak korzystać z kalkulatora diety zagranicznej", f_title),
-    (f"Wersja {WERSJA} z {WERSJA_DATA}: kontrola pustych etapów, posiłków i dat; druk delegacji (polecenie wyjazdu + rachunek kosztów), "
+    (f"Wersja {WERSJA} z {WERSJA_DATA}: kurs ręczny awaryjny; kontrola pustych etapów, posiłków i dat; druk delegacji (polecenie wyjazdu + rachunek kosztów), "
      "koszty przejazdów, noclegów i ryczałtów, kafelki z wynikiem, oznaczenie pól wymaganych i błędów, ochrona arkuszy.", f_sub),
     ("", None),
     ("1. Arkusz „Kalkulator” – wypełniaj tylko żółte pola z niebieskim tekstem. Pozostałe komórki liczą się same.", None),
@@ -992,6 +1024,7 @@ txt = [
     ("4. Kursy średnie NBP pobierają się automatycznie z api.nbp.pl (arkusz „Kursy NBP”). Wymagany internet i Excel z Microsoft 365 lub Excel 2024 na Windows.", None),
     ("    Plik pobrany z internetu otwiera się w Widoku chronionym – kliknij „Włącz edytowanie” (i „Włącz zawartość”, jeśli Excel zapyta), inaczej kursy się nie pobiorą.", None),
     ("    Jeśli kursy się nie odświeżyły: Ctrl+Alt+F9.", None),
+    ("    Gdy kursy nie pobierają się wcale (np. sieć firmowa blokuje api.nbp.pl): w arkuszu „Kursy NBP” wpisz kurs ręczny z datą notowania i nr tabeli (kolumny F–H) – zastąpi kurs z NBP.", None),
     ("5. „Kontrola danych” (góra arkusza) pokazuje OK albo opis błędu w danych. Kafelki obok pokazują kwotę do wypłaty (zawsze dieta), wydatki pokrywane z zaliczki na wydatki i ogółem do rozliczenia.", None),
     ("    Arkusze są chronione bez hasła – można wpisywać tylko w żółte pola. Żeby zmienić coś innego: Recenzja → Nie chroń arkusza.", None),
     ("6. Wydruk: przejdź do arkusza „Raport” i naciśnij Ctrl+P (albo Plik → Eksportuj → PDF). Raport mieści się na jednej stronie A4.", None),
@@ -1024,7 +1057,7 @@ wb._sheets = [kal, rap, dele, ins, kur, kra, par]
 wb.active = 0
 wb.save(OUT)
 json.dump(F, open(os.path.join(HERE, "formulas.json"), "w", encoding="utf-8"), ensure_ascii=False, indent=0)
-json.dump({"E0": E0, "RET": RET, "R0": R0, "RS": RS, "V0": V0, "VL": VL, "KO0": KO0, "KT": KT,
+json.dump({"KRS0": KRS0, "KRS1": KRS1, "E0": E0, "RET": RET, "R0": R0, "RS": RS, "V0": V0, "VL": VL, "KO0": KO0, "KT": KT,
            **{k: v for k, v in dict(PRAC=PRAC, STAN=STAN, CEL=CEL, NR=NR, DPOL=DPOL, MIEJ=MIEJ, SROD=SROD, WYJ=WYJ,
                                     POW=POW, DKURS=DKURS, TRYB=TRYB, ZAL=ZAL, TERM=TERM, DOW=DOW).items()}},
           open(os.path.join(HERE, "layout.json"), "w", encoding="utf-8"), indent=0)

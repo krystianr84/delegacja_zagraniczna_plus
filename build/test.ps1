@@ -14,7 +14,9 @@ $przypadki = @(
     @{ N = "tekst zamiast daty"; Set = "D15=abc"; E1 = "Niepoprawna data" },
     @{ N = "więcej posiłków niż dób"; Set = "E15=9"; E1 = "Więcej posiłków niż dni" },
     @{ N = "powrót przed wjazdem"; Set = "D20=2026-09-15 10:00"; E1 = "Powrót przez granicę musi być po" },
-    @{ N = "brak kursu (data z przyszłości)"; Set = "K7=2099-12-31"; E1 = "Brak kursu NBP" }
+    @{ N = "brak kursu (data z przyszłości)"; Set = "K7=2099-12-31"; E1 = "Brak kursu NBP" },
+    @{ N = "kurs ręczny zamiast NBP (Węgry, 4,4)"; Set = "$kontrolny;K7=2099-12-31;Kursy NBP!F8=4.4;Kursy NBP!G8=2026-10-08;Kursy NBP!H8=196/A/NBP/2026"; E1 = "OK"; Dieta = "838,95" },
+    @{ N = "kurs ręczny bez nr tabeli"; Set = "Kursy NBP!F8=4.4;Kursy NBP!G8=2026-10-08"; E1 = "Kurs ręczny: uzupełnij" }
 )
 $x = New-Object -ComObject Excel.Application
 $x.DisplayAlerts = $false
@@ -24,7 +26,7 @@ try {
         $wb = $x.Workbooks.Open($File, 0, $true)
         try {
             $k = $wb.Worksheets.Item("Kalkulator")
-            if ($p.Set) { foreach ($kv in $p.Set.Split(";")) { $a, $v = $kv.Split("=", 2); $k.Range($a).Formula = $v } }
+            if ($p.Set) { foreach ($kv in $p.Set.Split(";")) { $a, $v = $kv.Split("=", 2); if ($a -match "^(.+)!(.+)$") { $wb.Worksheets.Item($Matches[1]).Range($Matches[2]).Formula = $v } else { $k.Range($a).Formula = $v } } }
             $x.CalculateFull()
             $wynik = @()
             $e1 = $k.Range("E1").Text

@@ -2,6 +2,16 @@
 
 Numer wersji jest widoczny w nagłówku arkusza Kalkulator i w arkuszu Instrukcja. Pliki poszczególnych wersji są w [Wydaniach (Releases)](https://github.com/krystianr84/delegacji_zagranicznej_plus/releases).
 
+## 2.4 (09.10.2026)
+
+**Dodano**
+- **Kurs ręczny** w arkuszu Kursy NBP (kolumny F–H: kurs, data notowania, nr tabeli) – na wypadek, gdy kursy nie pobierają się automatycznie (np. sieć firmowa blokuje api.nbp.pl). Wpisany kurs zastępuje kurs z NBP w diecie, kosztach, Raporcie i Delegacji; kolumna „Źródło kursu” pokazuje, skąd jest kurs.
+- Kontrolę „Kurs ręczny: uzupełnij datę notowania i nr tabeli” (czerwone podświetlenie brakującego pola). Komunikat „Brak kursu NBP” podpowiada kurs ręczny.
+- Dwa testy regresji (kurs ręczny zamiast NBP, kurs ręczny bez nr tabeli); `-Set` w skryptach przyjmuje adresy z nazwą arkusza (`Kursy NBP!F8=4.4`). `przenies_dane.ps1` przenosi też kurs ręczny.
+
+**Zmieniono**
+- Kolumny z nr tabeli w arkuszu Kursy NBP są szersze (numer mieści się w całości).
+
 ## 2.3 (09.10.2026)
 
 **Zmieniono**

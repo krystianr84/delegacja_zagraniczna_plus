@@ -12,6 +12,7 @@ Produktem jest `Kalkulator_delegacji_zagranicznej.xlsx`. Plik jest bez makr, a w
 
 Numer wersji to stałe `WERSJA`/`WERSJA_DATA` w `build.py` (widoczne w nagłówku Kalkulatora i w Instrukcji). Wydanie wersji = zamrożona kopia `Kalkulator_delegacji_zagranicznej ver. X.Y.xlsx` w katalogu głównym (nie nadpisuj jej przy kolejnych zmianach).
 - **1.0** – kalkulator diety zagranicznej + Raport.
+- **2.4** (09.10.2026) – kurs ręczny awaryjny (Kursy NBP F:H, zastępuje kurs z WEBSERVICE; data i nr tabeli wymagane – kontrola E1), `-Set` z nazwą arkusza.
 - **2.3** (09.10.2026) – przykłady dat w komunikatach w formacie pól (`14.09.2026 10:30`).
 - **2.2** (09.10.2026) – kwota słownie w Delegacji (I61) ze słowami „złotych i” przed groszami (parametr `jedn` helpera `slownie()`).
 - **2.1** (09.10.2026) – kontrole: pusty etap między krajami (dawał podwójną dietę), tekst w polach dat (+ walidacja dat), więcej posiłków danego rodzaju niż rozpoczętych dób etapu; `test.ps1`, `wydanie.ps1`, licencja MIT.
@@ -60,7 +61,7 @@ Do skryptów `.ps1` używaj `pwsh` (PowerShell 7). Wymagany jest zainstalowany E
   - **Kalkulator**: sekcja 1 to dane podróży i polecenia wyjazdu (dwie kolumny pól), sekcja 2 to do 5 etapów-krajów (kraj, wjazd, posiłki, miejscowość, godziny, przejazd) plus wiersz „Powrót”, sekcja 3 liczy dietę wiersz w wiersz, sekcja 4 to dieta wg walut, sekcja 5 to pozostałe koszty i ogółem do rozliczenia.
   - **Raport**: wydruk A4 (pionowo, jedna strona). Zawiera dane podróży, tabelę diet i sekcję „Koszty podróży”. Pobiera wszystko formułami z Kalkulatora: sekcji 3 i 4 oraz arkusza Kursy NBP (data i nr tabeli). Kwoty w tekście formatuje `FIXED`, nie `TEXT` (ustawienia regionalne).
   - **Delegacja**: druk „Polecenie wyjazdu służbowego” (str. 1) + „Rachunek kosztów podróży” (str. 2) odwzorowany z `DELEGACJA.pdf`; skala 84%, ręczny podział strony przed wierszem 41. Trasa w tabeli przejazdów: dom (K5) → miejscowość 1 (przyjazd I15) → … → miejscowość n (wyjazd Jn) → dom (K6); puste godziny zastępowane czasami przekroczenia granic. Kwota słownie stoi pod kwotą Ogółem (I61:I65) – układ wybrany przez właściciela; Diety = Kalkulator!M{RS}; koszty przejazdu z kolumny N etapów, pozostałe pozycje z sekcji 5 Kalkulatora (kwoty w walutach obcych przeliczane po kursie NBP z arkusza Kursy NBP, tym samym co dla diety). Sumy w druku liczone `SUM(...)`, nie `+`, bo puste pozycje to tekst "". Kwota słownie z helpera `slownie()` w `build.py` (LET + LAMBDA; nazwy w LET nie mogą wyglądać jak adres komórki, np. `w3`, `c`, `r`). Pola podpisów i zatwierdzeń zostają kropkami. Arkusza **Raport** nie zmieniaj przy pracach nad Delegacją (prośba właściciela).
-  - **Kursy NBP**: A to kurs do przeliczenia, B to kursy z okresu w formułach rozlewanych. Surowy XML jest w ukrytej kolumnie N i ukrytym wierszu 23.
+  - **Kursy NBP**: A to kurs do przeliczenia, B to kursy z okresu w formułach rozlewanych. W A kolumny C:E (kurs, data, nr tabeli – używane przez Kalkulator i Raport) biorą wartości z kursu ręcznego F:H, gdy F nie jest puste; I = źródło kursu. `przenies_dane.ps1` kopiuje F:H tylko z wierszy z wpisanym kursem. Surowy XML jest w ukrytej kolumnie N i ukrytym wierszu 23.
   - **Kraje**, **Parametry** (procenty za posiłki), **Instrukcja**.
 
 ## Pułapki (sprawdzone)

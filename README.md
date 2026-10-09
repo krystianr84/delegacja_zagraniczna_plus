@@ -50,13 +50,16 @@ Więcej wskazówek jest w arkuszu **Instrukcja** w pliku.
 1. Sprawdź, czy kliknięto **Włącz edytowanie** (żółty pasek Widoku chronionego) i **Włącz zawartość**, jeśli Excel o to pytał.
 2. Naciśnij `Ctrl+Alt+F9` – wymusza ponowne przeliczenie i pobranie kursów.
 3. Sprawdź **datę kursu**. Kurs z przyszłej daty jeszcze nie istnieje – NBP publikuje kursy w dni robocze, około południa.
-4. Otwórz w przeglądarce <https://api.nbp.pl/api/exchangerates/tables/a/>. Jeśli strona się nie otwiera, a internet działa, sieć firmowa (proxy, zapora) blokuje NBP. Poproś dział IT o dostęp do `api.nbp.pl` albo skorzystaj z kalkulatora poza siecią firmową.
+4. Otwórz w przeglądarce <https://api.nbp.pl/api/exchangerates/tables/a/>. Jeśli strona się nie otwiera, a internet działa, sieć firmowa (proxy, zapora) blokuje NBP. Poproś dział IT o dostęp do `api.nbp.pl` albo **wpisz kurs ręcznie** (niżej).
+
+**Kurs ręczny – gdy kursy nie pobierają się wcale**
+W arkuszu **Kursy NBP**, w tabeli A, przy właściwej walucie wpisz w żółte pola: **kurs ręczny**, **datę notowania** i **nr tabeli** (np. `4,3789`, `08.10.2026`, `196/A/NBP/2026`). Kurs średni z tabeli A znajdziesz na [nbp.pl – tabela A](https://nbp.pl/statystyka-i-sprawozdawczosc/kursy/tabela-a/) (można wybrać datę notowania). Wpisany kurs zastępuje kurs z NBP w diecie, kosztach, Raporcie i Delegacji, a kolumna „Źródło kursu” pokazuje „wpisany ręcznie”. Datę i nr tabeli trzeba podać, bo Raport je drukuje. Żeby wrócić do kursu pobieranego automatycznie, usuń wpisany kurs ręczny.
 
 **W komórkach widać `#NAZWA?`**
 Excel jest za stary. Plik używa nowych funkcji (`LAMBDA`, `TEXTAFTER`, `TEXTSPLIT` i innych), których nie ma w Excelu 2021 i starszych. Potrzebny jest Excel z Microsoft 365 albo Excel 2024 na Windows.
 
 **Używam Maca, Excela w przeglądarce, LibreOffice albo Arkuszy Google**
-Te programy nie obsługują funkcji `WEBSERVICE`, więc kursy NBP się nie pobiorą, a dieta w PLN się nie policzy. Plik trzeba otworzyć w Excelu na Windows.
+Te programy nie obsługują funkcji `WEBSERVICE`, więc kursy NBP się nie pobiorą. Kalkulator i tak wymaga Excela z Microsoft 365 albo Excela 2024 na Windows (inne funkcje też nie są tam dostępne).
 
 **Nie mogę nic wpisać w komórkę**
 Arkusze są chronione, żeby przypadkiem nie skasować formuły. Wpisywać można tylko w żółte pola. Ochrona jest **bez hasła** – w razie potrzeby wyłączysz ją przez *Recenzja → Nie chroń arkusza*.

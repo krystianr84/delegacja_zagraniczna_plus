@@ -52,7 +52,7 @@ Bez argumentu `build.py` i skrypty działają na roboczym pliku `Kalkulator_dele
 
 ## Testy
 
-`build/test.ps1` otwiera plik w Excelu (bez zapisywania) i sprawdza 8 przypadków: przykład z `build.py`, przypadek kontrolny (Węgry), krótki wyjazd (1/3 diety), pusty etap między krajami, tekst zamiast daty, nadmiar posiłków, powrót przed wjazdem i brak kursu. Dla poprawnych danych porównuje kwoty diety i ogółem (także na druku Delegacji) i szuka błędów `#...` we wszystkich arkuszach. Kod wyjścia 1 oznacza, że któryś test nie przeszedł.
+`build/test.ps1` otwiera plik w Excelu (bez zapisywania) i sprawdza 10 przypadków: przykład z `build.py`, przypadek kontrolny (Węgry), krótki wyjazd (1/3 diety), pusty etap między krajami, tekst zamiast daty, nadmiar posiłków, powrót przed wjazdem, brak kursu oraz kurs ręczny (poprawny i bez nr tabeli). Dla poprawnych danych porównuje kwoty diety i ogółem (także na druku Delegacji) i szuka błędów `#...` we wszystkich arkuszach. Kod wyjścia 1 oznacza, że któryś test nie przeszedł.
 
 ```bash
 pwsh -NoProfile -File build/test.ps1                      # domyślnie wydanie/Kalkulator_delegacji_zagranicznej.xlsx
@@ -60,7 +60,7 @@ pwsh -NoProfile -File build/test.ps1                      # domyślnie wydanie/K
 
 Testy potrzebują Excela i internetu, więc nie da się ich uruchomić w GitHub Actions.
 
-Test scenariusza bez zapisywania zmian w pliku (tu: przypadek kontrolny – oczekiwany wynik 4 dni 4 godz. 0 min, 190,67 EUR, 834,92 PLN):
+Test scenariusza bez zapisywania zmian w pliku (tu: przypadek kontrolny – oczekiwany wynik 4 dni 4 godz. 0 min, 190,67 EUR, 834,92 PLN). Adres bez nazwy arkusza dotyczy Kalkulatora; inne arkusze: `Kursy NBP!F8=4.4`:
 
 ```bash
 pwsh -NoProfile -File verify.ps1 -File "<.xlsx>" -Set "C15=Węgry;D15=2026-09-28 12:00;E15=0;C16=;D16=;E16=;D20=2026-10-02 16:00;K7=2026-10-08;K8=w dniu daty kursu"

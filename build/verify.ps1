@@ -1,12 +1,12 @@
 ﻿param([string]$File = (Join-Path $PSScriptRoot "..\Kalkulator_delegacji_zagranicznej.xlsx"), [string]$Set = "")
-# Przelicza plik w Excelu (bez zapisu), szuka błędów i wypisuje wyniki. -Set "K7=...;C15=Niemcy" podmienia dane wejściowe.
+# Przelicza plik w Excelu (bez zapisu), szuka błędów i wypisuje wyniki. -Set "K7=...;C15=Niemcy;Kursy NBP!F8=4.25" podmienia dane wejściowe (bez nazwy arkusza = Kalkulator).
 $OutputEncoding = [Console]::OutputEncoding = [Text.Encoding]::UTF8
 $x = New-Object -ComObject Excel.Application
 $x.DisplayAlerts = $false
 try {
     $wb = $x.Workbooks.Open($File)
     $k = $wb.Worksheets.Item("Kalkulator")
-    if ($Set) { foreach ($kv in $Set.Split(";")) { $a, $v = $kv.Split("=", 2); $k.Range($a).Formula = $v } }
+    if ($Set) { foreach ($kv in $Set.Split(";")) { $a, $v = $kv.Split("=", 2); if ($a -match "^(.+)!(.+)$") { $wb.Worksheets.Item($Matches[1]).Range($Matches[2]).Formula = $v } else { $k.Range($a).Formula = $v } } }
     $x.CalculateFull()
     foreach ($ws in $wb.Worksheets) {
         foreach ($c in $ws.UsedRange.Cells) {
